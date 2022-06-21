@@ -32,3 +32,4 @@ tokenizers-*.tar
 *.so
 
 .nix-*
+result

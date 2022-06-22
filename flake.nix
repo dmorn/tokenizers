@@ -13,13 +13,18 @@
         rust = pkgs.rustPlatform;
         beam = pkgs.beamPackages;
 
+	mixNixDeps = import ./mix.nix {
+	  beamPackages = beam;
+	  lib = pkgs.lib;
+	};
+
         pname = "tokenizers";
         version = "0.1.0-dev";
         src = ./.;
 
         tokenizers = beam.buildMix rec {
           inherit src pname version;
-          name = pname;
+	  name = pname;
 
           mixFodDeps = beam.fetchMixDeps {
             inherit src version;
@@ -47,11 +52,7 @@
 	    pkgs.openssl
           ];
 
-	  buildInput = with pkgs; [
-	  ];
-
-          # propagatedBuildInputs = tokenizers-deps;
-          # buildInputs = builtins.attrValues tokenizers-deps;
+	  beamDeps = builtins.attrValues mixNixDeps;
         };
       in
       {
